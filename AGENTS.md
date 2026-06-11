@@ -36,7 +36,7 @@ Verify changes by doing a real conversion and opening the `.docx` — there are 
 - **Server default style**: `server.py` sets `_DEFAULT_STYLE = style_telus.json` (line 22). Both CLI and server share the same default.
 - **Cover page IS rendered** when `COVER_ENABLED=True`; `render_cover_page()` is called at line 759.
 - **Footer is always rendered**: `_add_page_numbers()` is called unconditionally in `setup_document()` (line 738), regardless of the `footer` key in the style JSON. The `footer` key only controls the label text and size.
-- **Logo**: `logo.png` in the repo root is the TELUS logo. `style_telus.json` references it by that name. Logo is silently skipped if the file doesn't exist (line 357 checks `COVER_LOGO_PATH.exists()`).
+- **Logo**: `Telus_logo.png` in the repo root is the TELUS logo. `style_telus.json` references it by that name. Logo is silently skipped if the file doesn't exist (line 357 checks `COVER_LOGO_PATH.exists()`).
 - **Fonts**: All styles use Poppins (body) and Roboto Slab (H1). Any "Calibri" claim in old docs is wrong.
 
 ---
@@ -92,7 +92,7 @@ Extra blockquote fields (`italic`, `border_width`, `border_space`, `space_before
 ## Gotchas
 
 - `.docx` output files are gitignored — don't commit them.
-- `logo.png` in the repo root is the TELUS logo used by `style_telus.json`. If it goes missing, the cover page renders without a logo (no error).
+- `Telus_logo.png` in the repo root is the TELUS logo used by `style_telus.json`. If it goes missing, the cover page renders without a logo (no error).
 - `style_personal.json` references `no-logo.png` which doesn't exist — logo is silently skipped.
 - Footer page numbers render unconditionally — the `footer` JSON key only controls text and size, not whether `_add_page_numbers()` runs.
 - The `cover.title` in `style_telus.json` is placeholder text — teammates should update it per document or pass a custom style.

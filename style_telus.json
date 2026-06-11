@@ -42,16 +42,16 @@
   "cover": {
     "enabled":       true,
     "bg_color":      "#4B286D",
-    "logo_path":     "logo.png",
+    "logo_path":     "Telus_logo.png",
     "logo_width_cm": 12,
-    "title":         "ADnA - How to Setup Agent assited at TELUS",
+    "title":         "TELUS — Document Title",
     "title_size":    48,
     "title_color":   "#4B286D",
     "top_spacer_pt": 72
   },
 
   "footer": {
-    "label": "Confidential — ADnA Team",
+    "label": "Confidential — TELUS",
     "size":  9,
     "color": "#1A1A1A"
   }
