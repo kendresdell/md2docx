@@ -1,8 +1,8 @@
 # md2docx
 
-Convert any Markdown file to a polished `.docx` — available as an **MCP tool** for Claude Code and Cline (VS Code), and as a standalone CLI.
+Convert any Markdown file to a polished `.docx` with TELUS branding — available as an **MCP tool** for Claude Code and Cline (VS Code), and as a standalone CLI.
 
-Default style is **TELUS branding** (purple/green, Poppins body, Roboto Slab H1, cover page with logo). A no-cover variant is also included.
+The only choice you need to make: **cover page or no cover page.**
 
 ---
 
@@ -17,7 +17,6 @@ python -m venv .venv
 
 # macOS / Linux
 source .venv/bin/activate
-
 # Windows
 .venv\Scripts\activate
 
@@ -38,8 +37,6 @@ where.exe python   # e.g. C:\Users\you\md2docx\.venv\Scripts\python.exe
 
 ### Step 2 — Claude Code
 
-Run this command (replace paths with your actual clone location):
-
 ```bash
 claude mcp add --scope user md2docx \
   /path/to/md2docx/.venv/bin/python \
@@ -47,10 +44,8 @@ claude mcp add --scope user md2docx \
 ```
 
 **Windows example:**
-```bash
-claude mcp add --scope user md2docx ^
-  C:\Users\you\md2docx\.venv\Scripts\python.exe ^
-  C:\Users\you\md2docx\server.py
+```
+claude mcp add --scope user md2docx C:\Users\you\md2docx\.venv\Scripts\python.exe C:\Users\you\md2docx\server.py
 ```
 
 Restart Claude Code. Verify with `/mcp` — you should see **md2docx** listed.
@@ -88,132 +83,51 @@ Save and restart VS Code. The **md2docx** server will appear in Cline's MCP pane
 
 ---
 
-## Available MCP Tools
+## Using the MCP Tools
 
-| Tool | Input | Description |
-|------|-------|-------------|
-| `convert_markdown_to_docx` | `markdown_text`, `output_path`, `style_path`* | Convert Markdown text to DOCX |
-| `convert_md_file_to_docx` | `input_path`, `output_path`, `style_path`* | Convert a `.md` file on disk to DOCX |
+Two tools are available. Both use TELUS branding. The only parameter you need is `cover_page`.
 
-`*` optional — defaults to `style_telus.json` (TELUS branding with cover page)
+| Tool | When to use |
+|------|-------------|
+| `convert_markdown_to_docx` | You have Markdown text to convert |
+| `convert_md_file_to_docx` | You have a `.md` file already on disk |
 
-**Example prompt to Claude:**
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `markdown_text` | string | yes (tool 1) | The Markdown content to convert |
+| `input_path` | string | yes (tool 2) | Absolute path to the `.md` file |
+| `output_path` | string | yes | Absolute path where the `.docx` will be saved |
+| `cover_page` | bool | no | `true` = include TELUS cover page (default), `false` = no cover |
+
+**Example prompts to Claude:**
+
 > Convert this markdown to a docx and save it to `/home/me/docs/report.docx`
 
-> Convert this markdown to a docx using style_telus_no_cover.json and save it to `/home/me/docs/report.docx`
+> Convert this markdown to a docx without a cover page and save it to `/home/me/docs/report.docx`
+
+> Convert the file `/home/me/notes.md` to docx with a cover page at `/home/me/docs/notes.docx`
 
 ---
 
 ## CLI Usage
 
 ```bash
-# Default style (style_telus.json — TELUS branding, with cover page)
+# With cover page (default)
 python md2docx.py input.md output.docx
 
-# No cover page
-python md2docx.py input.md output.docx --style style_telus_no_cover.json
-
-# Custom style
-python md2docx.py input.md output.docx --style style_default.json
-```
-
-```
-positional arguments:
-  input          Input Markdown file (.md)
-  output         Output Word document (.docx)
-
-optional arguments:
-  --style FILE, -s FILE
-                 JSON style guide (default: style_telus.json)
+# Without cover page
+python md2docx.py input.md output.docx --no-cover
 ```
 
 ---
 
-## Style Guides
+## Customising the Style
 
-| File | Description |
-|------|-------------|
-| `style_telus.json` | TELUS branding — purple/green, Poppins + Roboto Slab, **with cover page** |
-| `style_telus_no_cover.json` | Same TELUS branding, **no cover page** |
-| `style_default.json` | Minimal style — Poppins body, no cover, no footer |
-| `style_personal.json` | Dark personal style — cover enabled, black background |
+The TELUS style is defined in `style_telus.json`. To adjust colours, fonts, margins, or the cover title, edit that file directly. All colours are `"#RRGGBB"` hex strings.
 
-Copy any style file, rename it, and edit to create your own. All colours are `"#RRGGBB"` hex strings.
-
-### Style Guide Reference
-
-#### `document`
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `page_size` | string | `"letter"` or `"A4"` |
-| `line_spacing` | float | Line spacing multiplier (e.g. `1.15`) |
-| `margins.top_cm` | float | Top margin in centimetres |
-| `margins.bottom_cm` | float | Bottom margin in centimetres |
-| `margins.left_cm` | float | Left margin in centimetres |
-| `margins.right_cm` | float | Right margin in centimetres |
-
-#### `fonts`
-
-| Key | Description |
-|-----|-------------|
-| `body` | Font for body text, H2–H4, lists, tables |
-| `h1_override` | Font for H1 only (`""` to use `body`) |
-| `cover_title` | Font for the cover page title |
-| `footer` | Font for the footer |
-
-#### `headings` — one entry per level: `h1`, `h2`, `h3`, `h4`
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `size` | int | Font size in points |
-| `color` | string | Text color (`"#RRGGBB"`) |
-| `bold` | bool | Bold weight |
-| `italic` | bool | Italic style |
-
-#### `body` / `blockquote` / `code_inline` / `code_block`
-
-| Key | Description |
-|-----|-------------|
-| `size` | Font size in points |
-| `color` | Text color |
-| `border_color` | (`blockquote` only) Left border color |
-| `bg_color` | (`blockquote` only) Background color |
-
-#### `table`
-
-| Key | Description |
-|-----|-------------|
-| `header_bg` | Header row background color |
-| `header_text` | Header row text color |
-| `body_text` | Body row text color |
-| `header_size` | Header font size in points |
-| `body_size` | Body font size in points |
-
-#### `cover`
-
-| Key | Type | Description |
-|-----|------|-------------|
-| `enabled` | bool | `true` to render a cover page, `false` to skip |
-| `bg_color` | string | Cover background color |
-| `logo_path` | string | Path to logo image (relative to the style JSON file, or absolute) |
-| `logo_width_cm` | float | Logo width in centimetres |
-| `title` | string | Cover page title text |
-| `title_size` | int | Cover title font size in points |
-| `title_color` | string | Cover title text color |
-| `top_spacer_pt` | float | Vertical space above logo in points |
-
-Logo is silently skipped if the file does not exist — no error is raised.
-
-#### `footer`
-
-| Key | Description |
-|-----|-------------|
-| `label` | Footer text (appears on every page) |
-| `size` | Footer font size in points |
-| `color` | Footer text color |
-
-Note: page numbers are always rendered in the footer regardless of whether a `footer` key is present.
+The cover title defaults to a placeholder — update `cover.title` in `style_telus.json` per document if needed.
 
 ---
 

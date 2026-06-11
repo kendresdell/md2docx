@@ -743,15 +743,24 @@ def setup_document():
 # ── main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert Markdown to DOCX')
+    parser = argparse.ArgumentParser(description='Convert Markdown to DOCX (TELUS branding)')
     parser.add_argument('input',  help='Input .md file')
     parser.add_argument('output', help='Output .docx file')
+    parser.add_argument('--no-cover', action='store_true',
+                        help='Omit the cover page (default: cover page included)')
     parser.add_argument('--style', '-s',
-                        default=str(Path(__file__).parent / 'style_telus.json'),
-                        help='JSON style guide (default: style_telus.json)')
+                        default=None,
+                        help=argparse.SUPPRESS)   # advanced override, hidden from basic help
     args = parser.parse_args()
 
-    cfg    = load_style(args.style)
+    if args.style:
+        style = args.style
+    elif args.no_cover:
+        style = str(Path(__file__).parent / 'style_telus_no_cover.json')
+    else:
+        style = str(Path(__file__).parent / 'style_telus.json')
+
+    cfg    = load_style(style)
     build_style_constants(cfg)
     tokens = mistune.create_markdown(renderer='ast', plugins=['table'])(
                  Path(args.input).read_text(encoding='utf-8'))
