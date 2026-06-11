@@ -37,55 +37,71 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Find the path to your Python — you'll need it for the MCP config:
+Note the full path to your venv Python — you'll need it for the MCP config:
 
 ```bash
-# macOS / Linux
-which python        # e.g.  /home/you/md2docx/.venv/bin/python
+# macOS / Linux — copy this output
+which python
+# e.g.  /home/you/md2docx/.venv/bin/python
 
-# Windows (PowerShell)
-where.exe python    # e.g.  C:\Users\you\md2docx\.venv\Scripts\python.exe
+# Windows (PowerShell) — copy this output
+where.exe python
+# e.g.  C:\Users\you\md2docx\.venv\Scripts\python.exe
 ```
 
 ---
 
 ## Step 2 — Set up as an MCP server
 
-Pick the tool you use. All three work the same way.
+Pick the tool you use.
+
+---
 
 ### OpenCode
 
-Edit (or create) your OpenCode config file:
+Edit (or create) your global OpenCode config file:
 
 - **macOS / Linux**: `~/.config/opencode/opencode.json`
-- **Windows**: `%APPDATA%\opencode\opencode.json`
+- **Windows**: `C:\Users\<you>\.config\opencode\opencode.json`
 
-Add the `md2docx` entry inside the `"mcpServers"` block:
+Add the `md2docx` entry inside the `"mcp"` block:
 
 ```json
 {
-  "mcpServers": {
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
     "md2docx": {
-      "command": "/path/to/md2docx/.venv/bin/python",
-      "args": ["/path/to/md2docx/server.py"]
+      "type": "local",
+      "command": [
+        "/path/to/md2docx/.venv/bin/python",
+        "/path/to/md2docx/server.py"
+      ],
+      "enabled": true
     }
   }
 }
 ```
 
-**Windows example:**
+**Windows example** (use double backslashes):
 ```json
 {
-  "mcpServers": {
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
     "md2docx": {
-      "command": "C:\\Users\\you\\md2docx\\.venv\\Scripts\\python.exe",
-      "args": ["C:\\Users\\you\\md2docx\\server.py"]
+      "type": "local",
+      "command": [
+        "C:\\Users\\you\\md2docx\\.venv\\Scripts\\python.exe",
+        "C:\\Users\\you\\md2docx\\server.py"
+      ],
+      "enabled": true
     }
   }
 }
 ```
 
 Restart OpenCode. The `md2docx` tools will be available immediately.
+
+> **Note:** If you already have an `opencode.json` with other settings, just add the `"mcp"` block — don't replace the whole file.
 
 ---
 
