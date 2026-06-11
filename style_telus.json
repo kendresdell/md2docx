@@ -1,0 +1,58 @@
+{
+  "_comment": "md_to_docx style guide — Telus branding. Colors as hex strings (#RRGGBB).",
+
+  "document": {
+    "page_size": "letter",
+    "line_spacing": 1.15,
+    "margins": {
+      "top_cm": 2.0, "bottom_cm": 2.0,
+      "left_cm": 2.5, "right_cm": 2.5
+    }
+
+  },
+
+  "fonts": {
+    "body":         "Poppins",
+    "h1_override":  "Roboto Slab",
+    "cover_title":  "Poppins",
+    "footer":       "Poppins"
+  },
+
+
+  "headings": {
+    "h1": { "size": 24, "color": "#4B286D", "bold": false, "italic": false },
+    "h2": { "size": 18, "color": "#4B286D", "bold": false, "italic": false },
+    "h3": { "size": 14, "color": "#66CC00", "bold": false, "italic": false },
+    "h4": { "size": 12, "color": "#66CC00", "bold": false, "italic": false }
+  },
+
+  "body":        { "size": 11, "color": "#434343" },
+  "blockquote":  { "size": 10, "color": "#555555", "italic": false, "border_color": "#4B286D", "bg_color": "#F5F0F8", "border_width": 24, "border_space": 10, "space_before": 8, "space_after": 8 },
+  "code_inline": { "size": 10, "color": "#434343" },
+  "code_block":  { "size": 10, "color": "#555555" },
+
+  "table": {
+    "header_bg":   "#4B286D",
+    "header_text": "#FFFFFF",
+    "body_text":   "#434343",
+    "header_size": 10,
+    "body_size":   10
+  },
+
+  "cover": {
+    "enabled":       true,
+    "bg_color":      "#4B286D",
+    "logo_path":     "logo.png",
+    "logo_width_cm": 12,
+    "title":         "ADnA - How to Setup Agent assited at TELUS",
+    "title_size":    48,
+    "title_color":   "#4B286D",
+    "top_spacer_pt": 72
+  },
+
+  "footer": {
+    "label": "Confidential — ADnA Team",
+    "size":  9,
+    "color": "#1A1A1A"
+  }
+}
