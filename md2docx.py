@@ -748,6 +748,8 @@ def main():
     parser.add_argument('output', help='Output .docx file')
     parser.add_argument('--no-cover', action='store_true',
                         help='Omit the cover page (default: cover page included)')
+    parser.add_argument('--title', default=None,
+                        help=argparse.SUPPRESS)   # set cover title; hidden from basic help
     parser.add_argument('--style', '-s',
                         default=None,
                         help=argparse.SUPPRESS)   # advanced override, hidden from basic help
@@ -762,6 +764,14 @@ def main():
 
     cfg    = load_style(style)
     build_style_constants(cfg)
+
+    # Default cover title: explicit --title arg, else input filename stem
+    global COVER_TITLE
+    if args.title:
+        COVER_TITLE = args.title
+    elif not COVER_TITLE or COVER_TITLE == 'TELUS — Document Title':
+        COVER_TITLE = Path(args.input).stem.replace('_', ' ').replace('-', ' ')
+
     tokens = mistune.create_markdown(renderer='ast', plugins=['table'])(
                  Path(args.input).read_text(encoding='utf-8'))
     doc = setup_document()

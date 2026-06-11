@@ -42,6 +42,7 @@ def convert_markdown_to_docx(
         Confirmation message with the saved file path.
     """
     style = _STYLE_COVER if cover_page else _STYLE_NO_COVER
+    title = Path(output_path).stem.replace('_', ' ').replace('-', ' ')
     tmp = tempfile.NamedTemporaryFile(
         mode="w", suffix=".md", encoding="utf-8", delete=False
     )
@@ -49,7 +50,7 @@ def convert_markdown_to_docx(
         tmp.write(markdown_text)
         tmp.close()
         result = subprocess.run(
-            [sys.executable, _SCRIPT, tmp.name, output_path, "--style", style],
+            [sys.executable, _SCRIPT, tmp.name, output_path, "--style", style, "--title", title],
             capture_output=True,
             text=True,
             stdin=subprocess.DEVNULL,
@@ -78,8 +79,9 @@ def convert_md_file_to_docx(
         Confirmation message with the saved file path.
     """
     style = _STYLE_COVER if cover_page else _STYLE_NO_COVER
+    title = Path(output_path).stem.replace('_', ' ').replace('-', ' ')
     result = subprocess.run(
-        [sys.executable, _SCRIPT, input_path, output_path, "--style", style],
+        [sys.executable, _SCRIPT, input_path, output_path, "--style", style, "--title", title],
         capture_output=True,
         text=True,
         stdin=subprocess.DEVNULL,
